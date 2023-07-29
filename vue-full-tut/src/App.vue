@@ -19,19 +19,20 @@ function getRandomColor() {
 
 const addNote = () => {
   // note should have 10 characters or more to be valid
-  if (newNote.value.length > 9) {
-    notes.value.push({
-      id: Math.floor(Math.random() * 1000000),
-      text: newNote.value,
-      date: new Date(),
-      backgroundColor: getRandomColor(),
-    });
-    //close the modal after adding a note
-    showModal.value = false;
-    newNote.value = "";
+  if (newNote.value.length < 10) {
+    return errorMessage.value = "Note needs to be 10 characters or more!";
   }
 
-  return errorMessage.value = "Note needs to be 10 characters or more!";
+  notes.value.push({
+    id: Math.floor(Math.random() * 1000000),
+    text: newNote.value,
+    date: new Date(),
+    backgroundColor: getRandomColor(),
+  });
+  //close the modal after adding a note
+  showModal.value = false;
+  newNote.value = "";
+  errorMessage.value = "";
 }
 </script>
 
@@ -40,7 +41,7 @@ const addNote = () => {
     <div v-if="showModal" class="overlay">
       <div class="modal">
         <textarea 
-          v-model="newNote" 
+          v-model.trim="newNote" 
           name="note" 
           id="note" 
           cols="30" 
